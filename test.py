@@ -17,4 +17,4 @@ productList = {
     }
 }
 
-print(productList[1]["amountCustomer"])
+print(productList)

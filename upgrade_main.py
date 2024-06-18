@@ -26,12 +26,6 @@ def discounter(allPay):
     if allPay > 50000:
         return allPay * discountOver50k
 
-def paymentChecker(allPay, customerPay):
-    if allPay < customerPay:
-        return False
-    else:
-        return True
-
 def printReceipt(memberStatus, notebookAmount, tabletAmount, phoneAmount, allPay):
     pass
 
@@ -44,17 +38,17 @@ while True:
         print("🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸")
 
         # รับค่าเพื่อเลือกสินค้า
-        selectItemInput = int(input("เลือกรายการสินค้า (1-3), Ctrl + C เพื่อดำเนินการต่อ: "))
-        amountSelectItemInput = int(input("จำนวนสินค้าที่ต้องการ: "))
+        selectItemInput = int(input(f"เลือกรายการสินค้า (1-{productList}), Ctrl + C เพื่อดำเนินการต่อ: "))
 
-        # ถ้า amountCustomer ไม่เท่ากับ 0 ให้เพิ่มข้อมูล
-        if productList[selectItemInput]["amountCustomer"] != 0:
-            productList[selectItemInput].update({"amountCustomer": productList[selectItemInput]["amountCustomer"]+amountSelectItemInput})
+        if selectItemInput in productList:
+            amountSelectItemInput = int(input("จำนวนสินค้าที่ต้องการ: "))
+            # ถ้า amountCustomer ไม่เท่ากับ 0 ให้เพิ่มข้อมูล
+            if productList[selectItemInput]["amountCustomer"] != 0:
+                productList[selectItemInput].update({"amountCustomer": productList[selectItemInput]["amountCustomer"]+amountSelectItemInput})
+            else:
+                productList[selectItemInput].update({"amountCustomer": amountSelectItemInput})
         else:
-            productList[selectItemInput].update({"amountCustomer": amountSelectItemInput})
-    
-    except IndexError:
-        print(f"\n[ Error ] ไม่พบรายการที่คุณป้อนเข้ามาในระบบ, กรุณาลองอีกครั้ง!")
+            print(f"\n[ Error ] ไม่พบรายการที่คุณป้อนเข้ามาในระบบ, กรุณาลองอีกครั้ง!")
 
     except KeyboardInterrupt:
         # Debug Mode (Please remove before present!!!)
@@ -82,29 +76,53 @@ while True:
                     if discountMember10per > customerPayInput or customerPayInput == None or customerPayInput == '' or customerPayInput == 0 or customerPayInput == 0.0:
                         print("[ Warning ] คุณชำระเงินไม่ครบ, กรุณาชำระเงินให้ครบยอดชำระ!")
                     else:
-                        print("[ Error ] ขอบคุณสำหรับการชำระเงิน")
+                        print("[ Info ] ขอบคุณสำหรับการชำระเงิน")
                         print(f"[ Info ] จำนวนเงินทอน {customerPayInput-discountMember10per} ฿")
                         print("[ Info ] รายการสั่งซื้อ")
                         print(printReceipt())
 
             else:
                while True:
+                    try:
+                        customerPayInput = float(input("กรุณาชำระเงิน: "))
+                        if discountMember5per > customerPayInput or customerPayInput == None or customerPayInput == '' or customerPayInput == 0 or customerPayInput == 0.0:
+                            print("[ Warning ] คุณชำระเงินไม่ครบ, กรุณาชำระเงินให้ครบยอดชำระ!")
+                        else:
+                            print("[ Info ] ขอบคุณสำหรับการชำระเงิน")
+                            print(f"[ Info ] จำนวนเงินทอน {customerPayInput-discountMember5per} ฿")
+                            print("[ Info ] รายการสั่งซื้อ")
+                            print(printReceipt())
+                            exit()
+                    except ValueError:
+                        print("[ Error ] กรุณาใส่ค่าให้ถูกต้อง!")
+                    except Exception as error:
+                        print("[ Error ] พบปัญหา")
+
+        elif memberCheckInput == "N" or memberCheckInput == "n":
+            if allPay > 50000:
+                discountMember10per = allPay - (allPay*discountOver50k)
+                while True:
                     customerPayInput = float(input("กรุณาชำระเงิน: "))
-                    if discountMember5per > customerPayInput or customerPayInput == None or customerPayInput == '' or customerPayInput == 0 or customerPayInput == 0.0:
+                    if discountMember10per > customerPayInput or customerPayInput == None or customerPayInput == '' or customerPayInput == 0 or customerPayInput == 0.0:
                         print("[ Warning ] คุณชำระเงินไม่ครบ, กรุณาชำระเงินให้ครบยอดชำระ!")
                     else:
-                        print("[ Error ] ขอบคุณสำหรับการชำระเงิน")
-                        print(f"[ Info ] จำนวนเงินทอน {customerPayInput-discountMember5per} ฿")
+                        print("[ Info ] ขอบคุณสำหรับการชำระเงิน")
+                        print(f"[ Info ] จำนวนเงินทอน {customerPayInput-discountMember10per} ฿")
+                        print("[ Info ] รายการสั่งซื้อ")
+                        print(printReceipt())
+            else:
+                while True:
+                    customerPayInput = float(input("กรุณาชำระเงิน: "))
+                    if allPay > customerPayInput or customerPayInput == None or customerPayInput == '' or customerPayInput == 0 or customerPayInput == 0.0:
+                        print("[ Warning ] คุณชำระเงินไม่ครบ, กรุณาชำระเงินให้ครบยอดชำระ!")
+                    else:
+                        print("[ Info ] ขอบคุณสำหรับการชำระเงิน")
+                        print(f"[ Info ] จำนวนเงินทอน {customerPayInput-customerPayInput} ฿")
                         print("[ Info ] รายการสั่งซื้อ")
                         print(printReceipt())
 
-        elif memberCheckInput == "N" or memberCheckInput == "n":
-            pass
-
         else:
             print("[ Error ] กรุณาป้อนค่าให้ถูกต้อง!")
-
-        exit()
     
     except Exception as error:
         print(f"\n[ Error ] พบปัญหาในการทำงาน: {error}")
