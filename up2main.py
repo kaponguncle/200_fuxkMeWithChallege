@@ -1,21 +1,21 @@
 # รายการสินค้า
-productList = [
-    {
-        "name": "Notebook",
+productList = {
+    1: {
+        "name": "Laptop",
         "price": 34000,
         "amountCustomer": 0
     },
-    {
+    2: {
         "name": "Tablet",
         "price": 19000,
         "amountCustomer": 0
     },
-    {
-        "name": "Mobile cs Phone",
+    3: {
+        "name": "Smartphone",
         "price": 26000,
         "amountCustomer": 0
     }
-]
+}
 
 # ส่วนลดต่าง ๆ
 DISCOUNT_MEMBER = 0.95
@@ -47,14 +47,17 @@ def receiptPrint():
 while True:
     try:
         # แสดงข้อมูลใน productList ที่เก็บข้อมูลของสินค้า
-
+        print("***************** CSAI Shop *****************")
         for product in productList:
             print(f"{productList.index(product)+1}. {product["name"]} ราคา {product["price"]}฿ ,จำนวนสินค้าที่เลือก {product["amountCustomer"]} ชิ้น")
-        
-        selectProductInput = str(input("กรุณาเลือกสินค้า (1-3) เมื่อเลือกสินค้าเสร็จแล้วให้พิมพ์ ok หรือ OK เพื่อดำเนินการต่อ: "))
+        print("*********************************************")
 
+        # เมื่อ **Feature กำลังดำเนินการพัฒนา... 
+        selectProductInput = input("กรุณาเลือกสินค้า (1-3) เมื่อเลือกสินค้าเสร็จแล้วให้พิมพ์ ok หรือ OK เพื่อดำเนินการต่อ: ").strip()
+
+        # เมื่อเลือกเสร็จแล้ว ก็ให้ผู้ใช้งานพิมพ์ ok หรือ OK (ตัวใหญ่) เพื่อดำเนินการต่อ
         if selectProductInput == "ok" or selectProductInput == "OK":
-            customerMemberInput = str(input)
+            customerMemberInput = str(input("[ Prompt ] คุณเป็นสมาชิกหรือไม่ (Y/N): "))
             if customerMemberStatus:
                 print("")
             else:
@@ -62,7 +65,7 @@ while True:
                 print("")
         else:
             # โดยแปลง selectProductInput ให้สามารถเลือกข้อมูลใน productList ได้
-            if int(selectProductInput)-1 in productList:
+            if selectProductInput in productList:
                 productItemInput = int(input("กรุณาระบุจำนวนสินค้าที่ต้องการ หากต้องการลดจำนวนสินค้าใส่เครื่องหมาย - พร้อมกับจำนวนที่ต้องการจะลดได้: "))
                 if productList[selectProductInput] != 0:
                     productList[selectProductInput].update({"amountCustomer": productList[selectProductInput]["amountCustomer"]+productItemInput})
@@ -72,7 +75,7 @@ while True:
                     print(f"[ OK ] ได้เพิ่มรายการเรียบร้อยแล้ว ใน {productList[selectProductInput]["name"]} จำนวน {productList[selectProductInput]["amountCustomer"]} เครื่อง")
 
     except ValueError:
-        print(f"([ Error ] ไม่พบข้อมูลที่ค้นหา!")
+        print(f"([ Error ] ไม่พบข้อมูลที่เลือก!")
     
     except KeyboardInterrupt:
         print(f"[ OK ] ออกจากโปรแกรมเสร็จสิ้น, ขอบคุณสำหรับการใช้บริการ!")
@@ -82,3 +85,6 @@ while True:
     # ถ้าพบ Error ให้แสดงผลออกมา และออกจากโปรแกรมทันที
         print(f"[ Error ] โปรแกรมพบข้อผิดพลาด:\n{error}")
         exit()
+
+
+    
