@@ -26,13 +26,13 @@ customerMemberStatus = False
 customerPaid = 0
 
 # ฟังค์ชั่น
-def discounter(allPaid, memberStatus): # เอาไว้ตรวจสอบการลดราคา
-    if allPaid > 50000 and memberStatus == True:
-        return True
-    elif allPaid > 50000 and memberStatus == False:
-        return True
-    else:
-        return False
+# def discounter(allPaid, memberStatus): # เอาไว้ตรวจสอบการลดราคา
+#     if allPaid > 50000 and memberStatus == True:
+#         return allPaid * DISCOUNT_MEMBER
+#     elif allPaid > 50000 and memberStatus == False:
+#         return allPaid *
+#     else:
+#         return False
     
 def paymentChecker(allPaid, customerStatus):
     if allPaid > customerStatus:
@@ -49,22 +49,29 @@ while True:
         # แสดงข้อมูลใน productList ที่เก็บข้อมูลของสินค้า
         print("***************** CSAI Shop *****************")
         for product in productList:
-            print(f"{productList.index(product)+1}. {product["name"]} ราคา {product["price"]}฿ ,จำนวนสินค้าที่เลือก {product["amountCustomer"]} ชิ้น")
+            print(f"{productList.index(product)+1}. {product["name"]} ราคา {product["price"]}฿, จำนวนสินค้าที่เลือก {product["amountCustomer"]} ชิ้น")
         print("*********************************************")
 
-        # เมื่อ **Feature กำลังดำเนินการพัฒนา... 
         selectProductInput = input("กรุณาเลือกสินค้า (1-3) เมื่อเลือกสินค้าเสร็จแล้วให้พิมพ์ ok หรือ OK เพื่อดำเนินการต่อ: ").strip()
 
         # เมื่อเลือกเสร็จแล้ว ก็ให้ผู้ใช้งานพิมพ์ ok หรือ OK (ตัวใหญ่) เพื่อดำเนินการต่อ
-        if selectProductInput == "ok" or selectProductInput == "OK":
+        # เมื่อผู้ใช้งานป้อนเว้นวรรคลงในระบบ หรือค่าอื่น ๆ นอกเหนือจาก str หรือ int จะแสดงข้อความ Error ให้ป้อนค่าใหม่อีกครั้ง
+        if type(selectProductInput) == str and selectProductInput == "ok" or selectProductInput == "OK":
+
+            # Maintenance Mode... <start
             customerMemberInput = str(input("[ Prompt ] คุณเป็นสมาชิกหรือไม่ (Y/N): "))
             if customerMemberStatus:
-                print("")
+                print("[ Info ] คุณไม่ได้เป็นสมาชิกร้านค้า CSAI Shop")
+                print(f"[ Info ] ราการสินค้าที่เลือก\n{productList}")
+                exit()
             else:
                 customerMemberStatus = True
-                print("")
-        else:
-            # โดยแปลง selectProductInput ให้สามารถเลือกข้อมูลใน productList ได้
+                print("[ Info ] คุณเป็นสมาชิกร้านค้า CSAI Shop")
+                print(f"[ Info ] รายการสินค้าที่สั่งซื้อ\n{productList}")
+                exit()
+            # Maintenance Mode... <end>
+
+        elif type(selectProductInput) == int:
             if selectProductInput in productList:
                 productItemInput = int(input("กรุณาระบุจำนวนสินค้าที่ต้องการ หากต้องการลดจำนวนสินค้าใส่เครื่องหมาย - พร้อมกับจำนวนที่ต้องการจะลดได้: "))
                 if productList[selectProductInput] != 0:
@@ -73,9 +80,16 @@ while True:
                 else:
                     productList[selectProductInput].update({"amountCustomer": productList[selectProductInput]})
                     print(f"[ OK ] ได้เพิ่มรายการเรียบร้อยแล้ว ใน {productList[selectProductInput]["name"]} จำนวน {productList[selectProductInput]["amountCustomer"]} เครื่อง")
+            else:
+                print("[ Error ] ไม่พบสินค้าที่คุณเลือก, กรุณาเลือกใหม่อีกครั้ง")
+        else:
+            print("[ Error ] คุณป้อนค่าไม่ถูกต้อง! กรุณาป้อนใหม่อีกครั้ง")
+
+    except IndexError:
+        print("[ Error ] ไม่พบค่าที่คุณป้อน! กรุณาลองอีกครั้ง")
 
     except ValueError:
-        print(f"[ Error ] ไม่พบข้อมูลที่เลือก!")
+        print("[ Error ] คุณป้อนนั้นไม่ถูกต้อง! กรุณาลองอีกครั้ง")
     
     except KeyboardInterrupt:
         print(f"[ OK ] ออกจากโปรแกรมเสร็จสิ้น, ขอบคุณสำหรับการใช้บริการ!")
@@ -85,6 +99,3 @@ while True:
     # ถ้าพบ Error ให้แสดงผลออกมา และออกจากโปรแกรมทันที
         print(f"[ Error ] โปรแกรมพบข้อผิดพลาด:\n{error}")
         exit()
-
-
-    
