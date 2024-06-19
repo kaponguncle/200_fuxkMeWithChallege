@@ -75,7 +75,7 @@ while True:
                     print(f"[ OK ] ได้เพิ่มรายการเรียบร้อยแล้ว ใน {productList[selectProductInput]["name"]} จำนวน {productList[selectProductInput]["amountCustomer"]} เครื่อง")
 
     except ValueError:
-        print(f"([ Error ] ไม่พบข้อมูลที่เลือก!")
+        print(f"[ Error ] ไม่พบข้อมูลที่เลือก!")
     
     except KeyboardInterrupt:
         print(f"[ OK ] ออกจากโปรแกรมเสร็จสิ้น, ขอบคุณสำหรับการใช้บริการ!")
