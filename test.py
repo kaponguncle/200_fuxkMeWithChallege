@@ -16,5 +16,9 @@ productList = {
         "amountCustomer": 0
     }
 }
-
-print(productList)
+if [productInfo['amountCustomer'] for productInfo in productList.values()] == 0:
+    print("[ OK ] ออกจากโปรแกรมเสร็จสิ้น, ขอบคุณสำหรับการใช้บริการ!")
+else:
+    for info in productList.values():
+        if info["amountCustomer"] != 0:
+            print(f"{info["name"]}     ต่อเครื่อง    {info["price"]} บาท x {info["amountCustomer"]}    : {info['price'] * info['amountCustomer']}            บาท")
