@@ -37,7 +37,7 @@ def receiptPrint(customerMemberStatus):
     if customerMemberStatus:
         member_discount = productsPriceTotal * (1 - DISCOUNT_MEMBER)
         if productsPriceTotal > 50000:
-            additional_discount = productsPriceTotal * (1 - DISCOUNT_OVER_50K) - member_discount
+            additional_discount = (productsPriceTotal-member_discount) * (1-DISCOUNT_OVER_50K)
             print(f"ส่วนลดสมาชิก: {member_discount:,.2f} บาท")
             print(f"ส่วนลดเพิ่มเติม: {additional_discount:,.2f} บาท")
             print(f"ยอดชำระสุทธิ: {productsPriceTotal - (member_discount + additional_discount):,.2f} บาท")
@@ -116,8 +116,5 @@ while True:
 
     except ValueError:
         print("[ Error ] ป้อนค่าไม่ถูกต้อง! กรุณาลองอีกครั้ง")
-    except KeyboardInterrupt:
-        print("\n[ OK ] ออกจากโปรแกรมเสร็จสิ้น, ขอบคุณสำหรับการใช้บริการ!")
-        break
     except Exception as e:
         print(f"[ Error ] เกิดข้อผิดพลาด: {e}")
