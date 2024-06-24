@@ -29,19 +29,21 @@ customerPaid = 0.0
 # ฟังค์ชั่น
 def paymentChecker(allPaid, customerPaidInput, customerPaid):
     if customerPaid != 0:
-        print(f"[ Info ] ยอดที่ต้องชำระเพิ่ม: {allPaid-customerPaid:.2f} บาท")       
+        print(f"[ Info ] ยอดที่ต้องชำระเพิ่ม: {allPaid-customerPaid:.2f} บาท")
         customerPaid += customerPaidInput
     else:
         print(f"[ Info ] ยอดที่ต้องชำระ: {productsPriceTotal:.2f} บาท")
-        
+
 def receiptPrint(customerMemberStatus):
     print("***************** CSAI Shop Recipt *****************")
     for info in productList.values():
         if info['amountCustomer'] != 0:
             print(f"{info['name']}     ต่อเครื่อง    {info['price']} บาท x {info['amountCustomer']}    : {info['price'] * info['amountCustomer']} บาท")
     if customerMemberStatus == True:
-        print(f"")
-
+        print(f"ส่วนลดสมาชิก: {productsPriceTotal * (1 - DISCOUNT_MEMBER):.2f} บาท")
+        if productsPriceTotal > 50000:
+            print(f"ส่วนลดเพิ่มเติม: {productsPriceTotal * DISCOUNT_OVER_50K:.2f} บาท")
+        print(f"ยอดชำระสุทธิ: {productsPriceTotal * (DISCOUNT_MEMBER * DISCOUNT_OVER_50K):.2f} บาท")
     print("****************************************************")
 
 # โปรแกรม
@@ -61,11 +63,8 @@ while True:
             # ถ้าพบรายการแล้วก็จะตรวจสอบว่า product ที่เลือกมานั้นมีสินค้าอยู่หรือไม่ และถ้ายังมีสินค้าอยู่ ก็ให้เพิ่มจากที่มีอยู่เดิม
             productItemInput = int(input("กรุณาระบุจำนวนสินค้าที่ต้องการ หากต้องการลดจำนวนสินค้าใส่เครื่องหมาย - พร้อมกับจำนวนที่ต้องการจะลดได้: "))
             if productList[selectProductInput]['amountCustomer'] != 0:
-                # if productList[selectProductInput]['amountCustomer'] == 0:
-                
                 productList[selectProductInput].update({'amountCustomer': productList[selectProductInput]['amountCustomer']+productItemInput})
                 print(f"[ OK ] ได้อัพเดตรายการเพิ่มอีก {productItemInput} เครื่องเรียบร้อยแล้ว ในรายการ {productList[selectProductInput]['name']}")
-            
             else:
                 if productItemInput < 0:
                     print(f"[ Error ] เนื่องจาก {productList[selectProductInput]['name']} ไม่ได้ใส่จำนวนไว้ จึงไม่สามารถลดจำนวนสินค้าลงได้")
@@ -80,10 +79,10 @@ while True:
 
     except ValueError:
         print("[ Error ] คุณป้อนนั้นไม่ถูกต้อง! กรุณาลองอีกครั้ง")
-    
+
     except KeyboardInterrupt:
         # Maintenance Mode... <start>
-        
+
         checkAmount = [productInfo['amountCustomer'] for productInfo in productList.values()]
         if checkAmount == 0:
             print("\n[ OK ] ออกจากโปรแกรมเสร็จสิ้น, ขอบคุณสำหรับการใช้บริการ!")
@@ -95,50 +94,45 @@ while True:
 
             productsPriceTotal = laptopTotal + tabletTotal + phoneTotal
 
+            # ตรวจสอบสถานะสมาชิก
             customerMemberInput = str(input("\n[ Prompt ] คุณเป็นสมาชิกหรือไม่ (Y/N): ")).strip()
             if customerMemberInput == "Y" or customerMemberInput == "y":
-                
                 customerMemberStatus = True
                 print("[ Info ] คุณเป็นสมาชิกร้านค้า CSAI Shop")
                 print(f"[ Info ] รายการสินค้าที่เลือก\n{productList}")
-                
-                # เนื่องจากเป็นสมาชิกอยู่แล้วจึงได้นับส่วนลด 5% และถ้าลดราคาแล้วยังเกิน 50,000 บาทอยู่รับส่วนลดเพิ่มอีก 10%
+
+                # คำนวณส่วนลด
                 productsPriceTotal *= DISCOUNT_MEMBER
                 if productsPriceTotal > 50000:
                     productsPriceTotal *= DISCOUNT_OVER_50K
-                else:
-                    pass
 
-                # ตรวจสอบการจ่ายเงิน
-                # ถ้าจ่ายครบให้ไปที่ใบเสร็จ หากไม่ครบหรือไม่ใช่
+                # ตรวจสอบการชำระเงิน
                 while customerPaid >= productsPriceTotal:
                     customerPaidInput = float(input("ป้อนจำนวนเงินที่ต้องชำระ: ")).strip()
                     paymentChecker(productsPriceTotal, customerPaidInput, customerPaid)
+
                 receiptPrint(customerMemberStatus)
                 exit()
             elif customerMemberInput == "N" or customerMemberInput == "n":
                 customerMemberStatus = False
                 print("[ Info ] คุณไม่ได้เป็นสมาชิกร้านค้า CSAI Shop")
-                print(f"[ Info ] รายการสินค้าที่สั่งซื้อ\n{productList}")
-                
-                # เนื่องจากเป็นสมาชิกอยู่แล้วจึงได้นับส่วนลด 5% และถ้าลดราคาแล้วยังเกิน 50,000 บาทอยู่รับส่วนลดเพิ่มอีก 10%
+                print(f"[ Info ] รายการสินค้าที่เลือก\n{productList}")
+
+                # คำนวณส่วนลด
                 productsPriceTotal *= DISCOUNT_MEMBER
                 if productsPriceTotal > 50000:
                     productsPriceTotal *= DISCOUNT_OVER_50K
-                else:
-                    pass
 
-                # ตรวจสอบการจ่ายเงิน
-                # ถ้าจ่ายครบให้ไปที่ใบเสร็จ หากไม่ครบหรือไม่ใช่
+                # ตรวจสอบการชำระเงิน
                 while customerPaid >= productsPriceTotal:
                     customerPaidInput = float(input("ป้อนจำนวนเงินที่ต้องชำระ: ")).strip()
                     paymentChecker(productsPriceTotal, customerPaidInput, customerPaid)
+
                 receiptPrint(customerMemberStatus)
                 exit()
             else:
                 print("[ Error ] คุณป้อนค่าไม่ถูกต้อง! กรุณาลองอีกครั้ง")
-            # Maintenance Mode... <end>
-    
+
     except Exception as error:
     # ถ้าพบ Error ให้แสดงผลออกมา และออกจากโปรแกรมทันที
         print(f"[ Error ] โปรแกรมพบข้อผิดพลาด:\n{error}")

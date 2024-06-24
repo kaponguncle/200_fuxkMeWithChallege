@@ -1,19 +1,19 @@
 # รายการสินค้า
 productList = {
     1: {
-        "name": "Notebook",
-        "price": 34000,
-        "amountCustomer": 0
+        'name': "Notebook",
+        'price': 34000,
+        'amountCustomer': 0
     },
     2: {
-        "name": "Tablet",
-        "price": 19000,
-        "amountCustomer": 0
+        'name': "Tablet",
+        'price': 19000,
+        'amountCustomer': 0
     },
     3: {
-        "name": "Mobile cs Phone",
-        "price": 26000,
-        "amountCustomer": 0
+        'name': "Mobile cs Phone",
+        'price': 26000,
+        'amountCustomer': 0
     }
 }
 
@@ -34,7 +34,7 @@ while True:
         # แสดงรายการสินค้า
         print("🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸 CSAI Shop 🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸")
         for productName, productInfo in productList.items():
-            print(f"{productName} - {productInfo["name"]}       {productInfo["price"]}฿")
+            print(f"{productName} - {productInfo['name']}       {productInfo['price']}฿")
         print("🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸🌸")
 
         # รับค่าเพื่อเลือกสินค้า
@@ -43,10 +43,10 @@ while True:
         if selectItemInput in productList:
             amountSelectItemInput = int(input("จำนวนสินค้าที่ต้องการ: "))
             # ถ้า amountCustomer ไม่เท่ากับ 0 ให้เพิ่มข้อมูล
-            if productList[selectItemInput]["amountCustomer"] != 0:
-                productList[selectItemInput].update({"amountCustomer": productList[selectItemInput]["amountCustomer"]+amountSelectItemInput})
+            if productList[selectItemInput]['amountCustomer'] != 0:
+                productList[selectItemInput].update({'amountCustomer': productList[selectItemInput]['amountCustomer']+amountSelectItemInput})
             else:
-                productList[selectItemInput].update({"amountCustomer": amountSelectItemInput})
+                productList[selectItemInput].update({'amountCustomer': amountSelectItemInput})
         else:
             print(f"\n[ Error ] ไม่พบรายการที่คุณป้อนเข้ามาในระบบ, กรุณาลองอีกครั้ง!")
 
@@ -55,9 +55,9 @@ while True:
         print(f"\n[ Info ] รายการที่ถูกสั่ง: {productInfo}")
 
         # เตรียมค่าต่าง ๆ ให้พร้อมใช้งาน
-        notebookAmount = productList[1]["price"] * productList[1]["amountCustomer"]
-        tabletAmount = productList[2]["price"] * productList[2]["amountCustomer"]
-        phoneAmount = productList[3]["price"] * productList[3]["amountCustomer"]
+        notebookAmount = productList[1]['price'] * productList[1]['amountCustomer']
+        tabletAmount = productList[2]['price'] * productList[2]['amountCustomer']
+        phoneAmount = productList[3]['price'] * productList[3]['amountCustomer']
         allPay = notebookAmount + tabletAmount + phoneAmount
 
         # ลูกค้าเป็นสมาชิกหรือไม่
