@@ -69,11 +69,11 @@ class CSALShop:
                     break
                 else:
                     shortfall = self.total_price - self.payment
-                    print(f"จำนวนเงินไม่เพียงพอ ขาดอีก {shortfall:.2f} บาท")
+                    print(f"จำนวนเงินไม่เพียงพอ ขาดอีก {shortfall:,.2f} บาท")
                     # ถ้าจ่ายไม่พอ ให้ลูกค้าจ่ายเพิ่ม
                     while self.payment < self.total_price:
                         try:
-                            additional_payment = float(input(f"กรุณากรอกจำนวนเงินที่จะเพิ่มเพื่อชำระที่ขาดอีก {self.total_price - self.payment:.2f} บาท: "))
+                            additional_payment = float(input(f"กรุณากรอกจำนวนเงินที่จะเพิ่มเพื่อชำระที่ขาดอีก {self.total_price - self.payment:,.2f} บาท: "))
                             self.payment += additional_payment
                         except ValueError:
                             print("ข้อมูลไม่ถูกต้อง กรุณาป้อนตัวเลข.")
@@ -85,21 +85,21 @@ class CSALShop:
         # พิมพ์ใบเสร็จรับเงิน
         print("************************** ใบเสร็จ *************************************\n")
         if self.notebook_qty > 0:
-            print(f"Notebook {self.notebook_qty} เครื่อง ราคา {self.notebook_qty * self.prices['notebook']:.2f} บาท")
+            print(f"Notebook {self.notebook_qty} เครื่อง ราคา {self.notebook_qty * self.prices['notebook']:,.2f} บาท")
         if self.tablet_qty > 0:
-            print(f"Tablet {self.tablet_qty} เครื่อง ราคา {self.tablet_qty * self.prices['tablet']:.2f} บาท")
+            print(f"Tablet {self.tablet_qty} เครื่อง ราคา {self.tablet_qty * self.prices['tablet']:,.2f} บาท")
         if self.mobile_qty > 0:
-            print(f"Mobile {self.mobile_qty} เครื่อง ราคา {self.mobile_qty * self.prices['mobile']:.2f} บาท")
-        print(f"ราคารวมหลังหักส่วนลด: {self.total_price:.2f} บาท")
-        print(f"ยอดส่วนลด: {self.discount_amount:.2f} บาท")  # แสดงยอดส่วนลดที่คำนวณได้
-        print(f"จำนวนเงินที่ชำระ: {self.payment:.2f} บาท")
-        print(f"เงินทอน: {self.payment - self.total_price:.2f} บาท")
+            print(f"Mobile {self.mobile_qty} เครื่อง ราคา {self.mobile_qty * self.prices['mobile']:,.2f} บาท")
+        print(f"ราคารวมหลังหักส่วนลด: {self.total_price:,.2f} บาท")
+        print(f"ยอดส่วนลด: {self.discount_amount:,.2f} บาท")  # แสดงยอดส่วนลดที่คำนวณได้
+        print(f"จำนวนเงินที่ชำระ: {self.payment:,.2f} บาท")
+        print(f"เงินทอน: {self.payment - self.total_price:,.2f} บาท")
         print("***************************************************************************\n")
 
     def run(self):
         self.get_user_input()
         self.calculate_price()
-        print(f"ยอดรวมที่ต้องชำระ: {self.total_price:.2f} บาท")
+        print(f"ยอดรวมที่ต้องชำระ: {self.total_price:,.2f} บาท")
         self.process_payment()
         self.print_receipt()
 

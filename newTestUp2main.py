@@ -29,10 +29,10 @@ customerPaid = 0.0
 # ฟังค์ชั่น
 def paymentChecker(allPaid, customerPaidInput, customerPaid):
     if customerPaid != 0:
-        print(f"[ Info ] ยอดที่ต้องชำระเพิ่ม: {allPaid-customerPaid:.2f} บาท")
+        print(f"[ Info ] ยอดที่ต้องชำระเพิ่ม: {allPaid-customerPaid:,.2f} บาท")
         customerPaid += customerPaidInput
     else:
-        print(f"[ Info ] ยอดที่ต้องชำระ: {productsPriceTotal:.2f} บาท")
+        print(f"[ Info ] ยอดที่ต้องชำระ: {productsPriceTotal:,.2f} บาท")
 
 def receiptPrint(customerMemberStatus):
     print("***************** CSAI Shop Recipt *****************")
@@ -40,10 +40,10 @@ def receiptPrint(customerMemberStatus):
         if info['amountCustomer'] != 0:
             print(f"{info['name']}     ต่อเครื่อง    {info['price']} บาท x {info['amountCustomer']}    : {info['price'] * info['amountCustomer']} บาท")
     if customerMemberStatus == True:
-        print(f"ส่วนลดสมาชิก: {productsPriceTotal * (1 - DISCOUNT_MEMBER):.2f} บาท")
+        print(f"ส่วนลดสมาชิก: {productsPriceTotal * (1 - DISCOUNT_MEMBER):,.2f} บาท")
         if productsPriceTotal > 50000:
-            print(f"ส่วนลดเพิ่มเติม: {productsPriceTotal * DISCOUNT_OVER_50K:.2f} บาท")
-        print(f"ยอดชำระสุทธิ: {productsPriceTotal * (DISCOUNT_MEMBER * DISCOUNT_OVER_50K):.2f} บาท")
+            print(f"ส่วนลดเพิ่มเติม: {productsPriceTotal * DISCOUNT_OVER_50K:,.2f} บาท")
+        print(f"ยอดชำระสุทธิ: {productsPriceTotal * (DISCOUNT_MEMBER * DISCOUNT_OVER_50K):,.2f} บาท")
     print("****************************************************")
 
 # โปรแกรม
