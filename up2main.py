@@ -57,7 +57,7 @@ while True:
         # แสดงข้อมูลใน productList ที่เก็บข้อมูลของสินค้า
         print("***************** CSAI Shop *****************")
         for product, info in productList.items():
-            print(f"{product}. {info['name']} ราคา {info['price']}฿, จำนวนสินค้าที่เลือก {info['amountCustomer']} ชิ้น")
+            print(f"{product}. {info['name']} ราคา {float(info['price']):,.2f}฿ จำนวนสินค้าที่เลือก {info['amountCustomer']} ชิ้น")
         print("*********************************************")
 
         # เลือกสินค้า เมื่อเลือกสินค้าเสร็จสิ้น
