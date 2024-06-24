@@ -39,16 +39,20 @@ def receiptPrint(customerMemberStatus):
     print("***************** CSAI Shop Recipt *****************")
     for info in productList.values():
         if info['amountCustomer'] != 0:
-            print(f"{info['name']}     ต่อเครื่อง    {info['price']} บาท x {info['amountCustomer']}    : {info['price'] * info['amountCustomer']} บาท")
+            print(f"{info['name']}     ต่อเครื่อง    {info['price']} บาท x {info['amountCustomer']}    : {float(info['price'] * info['amountCustomer']):,.2f} บาท")
     if customerMemberStatus == True:
         print(f"ส่วนลดสมาชิก: {productsPriceTotal * (1 - DISCOUNT_MEMBER):,.2f} บาท")
         if productsPriceTotal > 50000:
             print(f"ส่วนลดเพิ่มเติม: {productsPriceTotal * (1 - DISCOUNT_OVER_50K):,.2f} บาท")
-        print(f"ยอดชำระสุทธิ: {productsPriceTotal * (DISCOUNT_MEMBER * DISCOUNT_OVER_50K):,.2f} บาท")
+            print(f"ยอดชำระสุทธิ: {productsPriceTotal - ((productsPriceTotal * (1 - DISCOUNT_OVER_50K)) + (productsPriceTotal * (1 - DISCOUNT_MEMBER))):,.2f} บาท")
+        else:
+            print(f"ส่วนลดสมาชิก: {productsPriceTotal * DISCOUNT_MEMBER:,.2f} บาท")
     else:
         if productsPriceTotal > 50000:
             print(f"ส่วนลดเพิ่มเติม: {productsPriceTotal * (1 - DISCOUNT_OVER_50K):,.2f} บาท")
-        print(f"ยอดชำระสุทธิ: {productsPriceTotal * (DISCOUNT_MEMBER * DISCOUNT_OVER_50K):,.2f} บาท")
+            print(f"ยอดชำระสุทธิ: {productsPriceTotal - (productsPriceTotal * DISCOUNT_OVER_50K):,.2f} บาท")
+        else:
+            print(f"ยอดชำระสุทธิ: {productsPriceTotal:,.2f} บาท")
     print("****************************************************")
 
 # โปรแกรม
@@ -103,11 +107,12 @@ while True:
             productsPriceTotal = laptopTotal + tabletTotal + phoneTotal
 
             customerMemberInput = str(input("\n[ Prompt ] คุณเป็นสมาชิกหรือไม่ (Y/N): ")).strip()
+            
+            # ถ้าเป็นสมาชิก
             if customerMemberInput == "Y" or customerMemberInput == "y":
                 
                 customerMemberStatus = True
                 print("[ Info ] คุณเป็นสมาชิกร้านค้า CSAI Shop")
-                # print(f"[ Info ] รายการสินค้าที่เลือก\n{productList}")
                 
                 # เนื่องจากเป็นสมาชิกอยู่แล้วจึงได้นับส่วนลด 5% และถ้าลดราคาแล้วยังเกิน 50,000 บาทอยู่รับส่วนลดเพิ่มอีก 10%
                 productsPriceTotal *= DISCOUNT_MEMBER
@@ -116,20 +121,21 @@ while True:
 
                 # ตรวจสอบการจ่ายเงิน
                 # ถ้าจ่ายครบให้ไปที่ใบเสร็จ หากไม่ครบหรือไม่ใช่
-                while customerPaid >= productsPriceTotal:
-                    print(f"[ Info ] จำนวนเงินที่ต้องชำระ {productsPriceTotal:,.2f} บาท")
-                    customerPaidInput = float(input("ป้อนจำนวนเงินที่ต้องชำระ: ")).strip()
+                while True:
+                    print(f"[ Info ] จำนวนเงินที่ต้องชำระ {abs(productsPriceTotal-customerPaid):,.2f} บาท")
+                    customerPaidInput = float(input("ป้อนจำนวนเงินที่ต้องชำระ: "))
                     if customerPaid != 0:
                         print(f"[ Info ] ยอดที่ต้องชำระเพิ่ม: {productsPriceTotal-customerPaid:,.2f} บาท")       
-                        customerPaid += customerPaidInput
+                        customerPaid = customerPaid + customerPaidInput
                     else:
-                        print(f"[ Info ] ยอดที่ต้องชำระ: {productsPriceTotal:,.2f} บาท")
-                receiptPrint(customerMemberStatus)
-                exit()
+                        print(f"[ OK ] ชำระเงินเสร็จสิ้น, เงินทอน {abs(customerPaid-productsPriceTotal):,.2f} บาท")
+                        receiptPrint(customerMemberStatus)
+                        exit()
+            
+            # ถ้าไม่ได้เป็นสมาชิก
             elif customerMemberInput == "N" or customerMemberInput == "n":
                 customerMemberStatus = False
                 print("[ Info ] คุณไม่ได้เป็นสมาชิกร้านค้า CSAI Shop")
-                # print(f"[ Info ] รายการสินค้าที่สั่งซื้อ\n{productList}")
                 
                 # เนื่องจากเป็นสมาชิกอยู่แล้วจึงได้นับส่วนลด 5% และถ้าลดราคาแล้วยังเกิน 50,000 บาทอยู่รับส่วนลดเพิ่มอีก 10%
                 productsPriceTotal *= DISCOUNT_MEMBER
@@ -138,19 +144,18 @@ while True:
 
                 # ตรวจสอบการจ่ายเงิน
                 # ถ้าจ่ายครบให้ไปที่ใบเสร็จ หากไม่ครบหรือไม่ใช่
-                while customerPaid >= productsPriceTotal:
-                    print(f"[ Info ] จำนวนเงินที่ต้องชำระ {productsPriceTotal:,.2f} บาท")
-                    customerPaidInput = float(input("ป้อนจำนวนเงินที่ต้องชำระ: ")).strip()
+                while True:
+                    print(f"[ Info ] จำนวนเงินที่ต้องชำระ {abs(productsPriceTotal-customerPaid):,.2f} บาท")
+                    customerPaidInput = float(input("ป้อนจำนวนเงินที่ต้องชำระ: "))
                     if customerPaid != 0:
                         print(f"[ Info ] ยอดที่ต้องชำระเพิ่ม: {productsPriceTotal-customerPaid:,.2f} บาท")       
-                        customerPaid += customerPaidInput
+                        customerPaid = customerPaid + customerPaidInput
                     else:
-                        print(f"[ Info ] ยอดที่ต้องชำระ: {productsPriceTotal:,.2f} บาท")
-                receiptPrint(customerMemberStatus)
-                exit()
+                        print(f"[ OK ] ชำระเงินเสร็จสิ้น, เงินทอน {abs(productsPriceTotal-customerPaid):,.2f} บาท")
+                        receiptPrint(customerMemberStatus)
+                        exit()
             else:
                 print("[ Error ] คุณป้อนค่าไม่ถูกต้อง! กรุณาลองอีกครั้ง")
-            # Maintenance Mode... <end>
     
     except Exception as error:
     # ถ้าพบ Error ให้แสดงผลออกมา และออกจากโปรแกรมทันที
