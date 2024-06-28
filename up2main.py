@@ -18,8 +18,8 @@ productList = {
 }
 
 # ส่วนลดต่าง ๆ
-DISCOUNT_MEMBER = 0.95
-DISCOUNT_OVER_50K = 0.9
+DISCOUNT_MEMBER = 0.05
+DISCOUNT_OVER_50K = 0.1
 
 # สถานะของลูกค้า
 customerMemberStatus = False
